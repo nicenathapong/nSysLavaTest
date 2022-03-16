@@ -1,5 +1,5 @@
 const { Client } = require('discord.js')
-const { nSysManager } = require('../nSysLava');
+const { nSysManager } = require('nsyslava');
 const axios = require('axios');
 
 const config =  {
