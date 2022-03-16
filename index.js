@@ -3,8 +3,8 @@ const { nSysManager } = require('nsyslava');
 const axios = require('axios');
 
 const config =  {
-    TOKEN: 'OTE2OTQzNTUzNzczNTkyNjA2.YaxgOw.r9yymSqt3vf7mCjrwQaoLXQWIYQ',
-    PREFIX: 'tn.',
+    TOKEN: 'YOUR_BOT_TOKEN',
+    PREFIX: '!',
     ADMIN_IDS: ['635750674604359690']
 }
 
