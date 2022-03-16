@@ -3,7 +3,7 @@ const { nSysManager } = require('nsyslava');
 const axios = require('axios');
 
 const config =  {
-    TOKEN: 'YOUR_BOT_TOKEN',
+    TOKEN: '',
     PREFIX: '!',
     ADMIN_IDS: ['635750674604359690']
 }
@@ -19,9 +19,7 @@ const manager = new nSysManager([
         reconnect: {
             retryAmout: 999,
             delay: 3000,
-        },
-        search: true,
-        play: true,
+        }
     }
 ])
 
@@ -644,7 +642,7 @@ const commands = [
             msg.createMessageComponentCollector({
                 filter: ({ user }) => user.id === message.author.id, time: 300000
             }).on('collect', async interaction => {
-                let _m
+                let _m;
                 if (!isApplied) isApplied = true;
                 interaction.deferUpdate();
                 if (interaction.customId === 'connect') {
@@ -660,9 +658,10 @@ const commands = [
                             retryAmout: Number(data.reconnect.split('/').at(0)),
                             delay: Number(data.reconnect.split('/').at(1))
                         } : {},
-                        search: data.permission?.split('/')?.at(0) === 'true' ? true : data.permission?.split('/')?.at(0) === 'false' ? false : undefined,
-                        play: data.permission?.split('/')?.at(1) === 'true' ? true : data.permission?.split('/')?.at(1) === 'false' ? false : undefined,
+                        search: data.permission?.split('/')?.at(0) === 'true' ? true : (data.permission?.split('/')?.at(0) === 'false' ? false : undefined),
+                        play: data.permission?.split('/')?.at(1) === 'true' ? true : (data.permission?.split('/')?.at(1) === 'false' ? false : undefined),
                     }
+                    console.log(nodeConfig);
                     const node = manager.addNode(nodeConfig);
                     await node.connect(client.user.id);
                     isConnected = true;
@@ -695,10 +694,10 @@ const commands = [
             })
 
             for (let i = 0; i < required.length; i++) {
-                if (isApplied) break;
                 const m = await message.channel.awaitMessages({
                     filter: ({ author }) => author.id === message.author.id, max: 1, time: 60000, errors: ['time']
                 }).then(_ => _?.at(0)).catch(() => {});
+                if (isApplied) break;
                 if (!m?.content) return; // time out
                 if (!required[i].check(m.content)) {
                     const _m = await message.reply([`❌ ${required[i].error}`, 'โปรดลองใหม่อีกครั้งนะคะ'].join('\n'));

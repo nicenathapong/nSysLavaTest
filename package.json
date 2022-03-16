@@ -1,6 +1,6 @@
 {
   "name": "nsysclienttest",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Music bot src for test with nSysLava!",
   "main": "index.js",
   "scripts": {
@@ -12,6 +12,6 @@
   "dependencies": {
     "axios": "^0.26.1",
     "discord.js": "^13.6.0",
-    "nsyslava": "^1.0.0"
+    "nsyslava": "^1.0.24"
   }
 }
