@@ -3,7 +3,7 @@ const { nSysManager } = require('../nSysLava');
 const axios = require('axios');
 
 const config =  {
-    TOKEN: 'OTE2OTQzNTUzNzczNTkyNjA2.YaxgOw.ESmP8U8XHsFkzmVOeov6dilahak',
+    TOKEN: '',
     PREFIX: '!',
     ADMIN_IDS: ['635750674604359690']
 }
