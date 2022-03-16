@@ -1,0 +1,17 @@
+{
+  "name": "nsysclienttest",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "nicenathapong",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.26.1",
+    "discord.js": "^13.6.0",
+    "nsyslava": "^1.0.0"
+  }
+}
