@@ -1,4 +1,4 @@
-# **🤖 nSysLavatest**
+# **🤖 nSysLavaTest**
 > Music bot src for test with [**nSysLava**](https://github.com/nicenathapong/nSysLava) !
 
 # **📌 How to use / วิธีการใช้งาน**
