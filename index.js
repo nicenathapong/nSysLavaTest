@@ -1,9 +1,9 @@
 const { Client } = require('discord.js')
-const { nSysManager } = require('nsyslava');
+const { nSysManager } = require('../nSysLava');
 const axios = require('axios');
 
 const config =  {
-    TOKEN: '',
+    TOKEN: 'OTE2OTQzNTUzNzczNTkyNjA2.YaxgOw.ESmP8U8XHsFkzmVOeov6dilahak',
     PREFIX: '!',
     ADMIN_IDS: ['635750674604359690']
 }
@@ -661,7 +661,6 @@ const commands = [
                         search: data.permission?.split('/')?.at(0) === 'true' ? true : (data.permission?.split('/')?.at(0) === 'false' ? false : undefined),
                         play: data.permission?.split('/')?.at(1) === 'true' ? true : (data.permission?.split('/')?.at(1) === 'false' ? false : undefined),
                     }
-                    console.log(nodeConfig);
                     const node = manager.addNode(nodeConfig);
                     await node.connect(client.user.id);
                     isConnected = true;
