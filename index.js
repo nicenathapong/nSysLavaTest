@@ -1,10 +1,9 @@
 const { Client } = require('discord.js')
-const { nSysManager } = require('../nSysLava');
+const { nSysManager } = require('nsyslava');
 const axios = require('axios');
 
 const config =  {
-    // TOKEN: 'OTE2OTQzNTUzNzczNTkyNjA2.YaxgOw.-rBclxHF8r2wE2SlwFLHyFC_DDg', // AONA
-    TOKEN: 'ODQ2NzQyNzg2NjQ0Mzc3NjE5.YKz8rA.qwlBeNSNvKr-U04s9yULvHNF7Pw', // nSysTest
+    TOKEN: '',
     PREFIX: '!',
     ADMIN_IDS: ['635750674604359690']
 }
@@ -15,22 +14,10 @@ const manager = new nSysManager([
         host: 'localhost',
         port: 2333,
         secure: false,
-        authorization: '@64promiseall',
+        authorization: 'loveu3000',
         clientName: 'nSysLava',
         reconnect: {
             retryAmout: 999,
-            delay: 3000,
-        }
-    },
-    {
-        name: 'nLavalink2',
-        host: 'localhost',
-        port: 2334,
-        secure: false,
-        authorization: '@64promiseall',
-        clientName: 'nSysLava',
-        reconnect: {
-            retryAmout: 10,
             delay: 3000,
         }
     }
