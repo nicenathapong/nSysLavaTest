@@ -12,6 +12,6 @@
   "dependencies": {
     "axios": "^0.26.1",
     "discord.js": "^13.6.0",
-    "nsyslava": "^1.0.7"
+    "nsyslava": "^1.0.8"
   }
 }

@@ -10,11 +10,11 @@ const config =  {
 
 const manager = new nSysManager([
     {
-        name: 'nLavalink',
+        name: 'nLavalink1',
         host: 'localhost',
         port: 2333,
         secure: false,
-        authorization: 'loveu3000',
+        authorization: '12345678',
         clientName: 'nSysLava',
         reconnect: {
             retryAmout: 999,
@@ -28,6 +28,14 @@ manager.on('nodeDisconnect', node => console.log(`[nSysLava] Node "${node.name}"
 manager.on('nodeReconnecting', (node, retryAmout) => console.log(`[nSysLava] Node "${node.name}" Reconnecing.. ${retryAmout.toLocaleString()}`))
 manager.on('nodeReconnectingFull', node => console.log(`[nSysLava] Node "${node.name}" offline.`));
 manager.on('playerReconnect', player => console.log(`[nSysLava] [${player.node.name}] Player guildId "${player.guildId}" Reconnected!`))
+manager.on('TrackStart', (player, track) => console.log(`[nSysLava] Player guildId "${player.guildId}" -> TrackStart "${track.info.title}"`))
+manager.on('TrackEnd', (player, track) => console.log(`[nSysLava] Player guildId "${player.guildId}" -> TrackEnd "${track.info.title}"`))
+manager.on('TrackException', (player, track) => console.log(`[nSysLava] Player guildId "${player.guildId}" -> TrackException "${track.info.title}"`))
+manager.on('TrackStuckEvent', (player, track) => console.log(`[nSysLava] Player guildId "${player.guildId}" -> TrackStuckEvent "${track.info.title}"`))
+manager.on('queueEnd', player => console.log(`[nSysLava] Player guildId "${player.guildId}" queue has ended!`));
+manager.on('channelLeave', player => console.log(`[nSysLava] Player guildId "${player.guildId}" Leaved!`));
+manager.on('channelJoin', player => console.log(`[nSysLava] Player guildId "${player.guildId}" Joined to channelId "${player.channelId}"!`));
+manager.on('channelMove', player => console.log(`[nSysLava] Player guildId "${player.guildId}" Moved to channelId "${player.channelId}"!`));
 
 const client = new Client({ intents: 32767 });
 
@@ -43,7 +51,7 @@ client.login(config.TOKEN);
 
 client.once('ready', () => {
     console.log(`[Client] is Ready! | Login as ${client.user.tag}`)
-    manager.connect(client.user.id)
+    manager.connect(client.user.id);
 })
 
 client.on('messageCreate', message => {
@@ -77,8 +85,8 @@ function generateEmbed(tracks, start) {
             name: `**${(index + start + 1).toLocaleString()})** ${item.info.title}`,
             value: `*${item.info.isStream ? 'Stream' : msToTime(item.info.length)}* | ${item.info.author}`
         })),
-        ...(tracks.length > 10 ? { footer: { text: `นี่คือหน้าที่ ${((start / 10) + 1).toLocaleString()} จากทั้งหมด ${Math.ceil(tracks.length / 10).toLocaleString()} หน้า` } } : {}),
-        color: 'AQUA'
+        footer: { text: tracks.length > 10 ? `นี่คือหน้าที่ ${((start / 10) + 1).toLocaleString()} จากทั้งหมด ${Math.ceil(tracks.length / 10).toLocaleString()} หน้า` : '' },
+        color: 'AQUA',
     }
 };
 
