@@ -1,9 +1,10 @@
 const { Client } = require('discord.js')
-const { nSysManager } = require('nsyslava');
+const { nSysManager } = require('../nSysLava');
 const axios = require('axios');
 
 const config =  {
-    TOKEN: '',
+    // TOKEN: 'OTE2OTQzNTUzNzczNTkyNjA2.YaxgOw.-rBclxHF8r2wE2SlwFLHyFC_DDg', // AONA
+    TOKEN: 'ODQ2NzQyNzg2NjQ0Mzc3NjE5.YKz8rA.qwlBeNSNvKr-U04s9yULvHNF7Pw', // nSysTest
     PREFIX: '!',
     ADMIN_IDS: ['635750674604359690']
 }
@@ -20,6 +21,18 @@ const manager = new nSysManager([
             retryAmout: 999,
             delay: 3000,
         }
+    },
+    {
+        name: 'nLavalink2',
+        host: 'localhost',
+        port: 2334,
+        secure: false,
+        authorization: '@64promiseall',
+        clientName: 'nSysLava',
+        reconnect: {
+            retryAmout: 10,
+            delay: 3000,
+        }
     }
 ])
 
@@ -27,6 +40,7 @@ manager.on('nodeConnect', node => console.log(`[nSysLava] Node "${node.name}" Co
 manager.on('nodeDisconnect', node => console.log(`[nSysLava] Node "${node.name}" Disconnected!`));
 manager.on('nodeReconnecting', (node, retryAmout) => console.log(`[nSysLava] Node "${node.name}" Reconnecing.. ${retryAmout.toLocaleString()}`))
 manager.on('nodeReconnectingFull', node => console.log(`[nSysLava] Node "${node.name}" offline.`));
+manager.on('playerReconnect', player => console.log(`[nSysLava] [${player.node.name}] Player guildId "${player.guildId}" Reconnected!`))
 
 const client = new Client({ intents: 32767 });
 
@@ -169,7 +183,7 @@ const commands = [
             if (!player) {
                 player = manager.createPlater(message.guildId);
                 if (!player) return message.reply('❌ ไม่สามารถสร้างตัวเล่นเพลงได้')
-                player.connect(channel.id);
+                player.connect(channel.id, { deafened: true });
                 message.channel.send(`✅ เชื่อมต่อไปยังช่องเสียง "${channel.name}" เรียบร้อยค่ะ!`).then(m => setTimeout(() => m.delete(), 3000)).catch(() => {});
             } else if (player.channelId !== channel.id) {
                 const playerChannel = message.guild.channels.cache.get(player.channelId);
@@ -177,7 +191,7 @@ const commands = [
                     '❌ ดูเหมือนตอนนี้บอทจะไม่ได้เชื่อมต่อช่องเสียงของคุณอยู่นะ',
                     `ขณะนี้มีคนใช้บอทอยู่ที่ช่องเสียง <#${player.channelId}> ค่ะ`
                 ].join('\n'));
-                player.connect(channel.id);
+                player.connect(channel.id, { deafened: true });
             };
             const res = await manager.loadTracks(args.join(' ')).catch(e => ({ loadType: 'LOAD_FAILED' }));
             if (res.loadType === 'LOAD_FAILED' || res.loadType === 'NO_MATCHES') return message.reply(`❌ ไม่พบผลการค้นหาของเพลงที่คุณขอมาค่ะ`);
@@ -714,6 +728,23 @@ const commands = [
         }
     },
     {
+        name: 'connect-node',
+        description: ['connectnode'],
+        admin: true,
+        /**
+         * @param { import('discord.js').Message } message 
+         * @param { string[] } args 
+         */
+        run(message, args) {
+            if (!args[0]) return message.reply('❌ โปรดระบุชื่อของ Node ที่ต้องการจะเชื่อมต่อด้วยนะคะ');
+            const node = manager.getNode(args[0]);
+            if (!node) return message.reply(`❌ ไม่พบ Node "${args[0]}" ค่ะ`);
+            if (node.isConnected) return message.reply(`❌ Node "${node.name}" มีการเชื่อมต่ออยู่แล้วค่ะ`);
+            node.connect(client.user.id);
+            message.reply(`✅ เชื่อมต่อกับ Node "${node.name}" เรียบร้อยค่ะ!`)
+        }
+    },
+    {
         name: 'delete-node',
         aliases: ['deletenode', 'delnode', 'rmnode'],
         admin: true,
@@ -724,7 +755,7 @@ const commands = [
         run(message, args) {
             if (!args[0]) return message.reply('❌ โปรดระบุชื่อของ Node ที่ต้องการจะลบด้วยนะคะ')
             const node = manager.getNode(args[0]);
-            if (!node) return message.reply(`❌ ไม่พบ Node "${node.name}" ค่ะ`)
+            if (!node) return message.reply(`❌ ไม่พบ Node "${args[0]}" ค่ะ`)
             node.disconnect();
             manager.deleteNode(node.name);
             message.reply(`✅ ลบ Node "${node.name}" เรียบร้อยค่ะ!`)
